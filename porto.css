@@ -1,0 +1,498 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color: white;
+    --secondery-color: black;
+}
+
+.dark-mode {
+    --primary-color: black;
+    --secondery-color: white;
+}
+
+nav {
+    width: 100%;
+    height: 10vh;
+    position: sticky;
+    left: 0;
+    top: 0;
+    font-family: cursive;
+    font-weight: bolder;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px outset var(--secondery-color);
+    z-index: 5;
+}
+
+#links a.nav-link {
+    color: var(--secondery-color);
+}
+
+@media(max-width:992px) {
+    #links a.nav-link {
+        color: rgb(205, 85, 0);
+    }
+
+    #name {
+        color: var(--secondery-color);
+    }
+}
+
+@media(min-width:993px) {
+    #name{
+        color: rgb(205, 85, 0);
+    }
+}
+
+#name {
+    flex-grow: 1;
+    padding-left: 5vw;
+    font-size: 20px;
+}
+
+.offcanvas {
+    flex-grow: 2;
+    justify-content: space-around;
+    font-size: 1.2rem;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+}
+
+nav ul li {
+    flex-grow: 1;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--secondery-color);
+}
+
+.nav-item:hover {
+    color: rgb(205, 85, 0);
+}
+
+#color-mode {
+    color: rgb(205, 85, 0);
+    cursor: pointer;
+    padding-right: 1rem;
+}
+
+/* Adjusted navbar-toggler to preserve Bootstrap's icon */
+.navbar-toggler {
+    background-color: transparent;
+    /* Example: Make background transparent */
+    border: 3px solid black;
+    /* Remove border if undesired */
+}
+
+/* Optional: Customize the toggler icon color if needed */
+.navbar-toggler-icon {
+    filter: invert(50%);
+    /* Example filter to adjust icon color */
+}
+
+.k {
+    color: rgb(255, 223, 0);
+}
+
+.navbar-toggler {
+    color: rgb(205, 85, 0);
+    background-color: rgb(205, 85, 0);
+}
+
+main {
+    width: 100%;
+    height: 50vh;
+    text-align: center;
+    padding-top: 40vh;
+    padding-bottom: 50vh;
+    background-color: var(--primary-color);
+}
+
+main .head1 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 60px;
+    color: rgb(205, 85, 0);
+    font-style: oblique;
+}
+
+main .hi {
+    color: var(--secondery-color);
+}
+
+main .head2 {
+    margin-left: 25vw;
+    font-weight: lighter;
+    font-style: oblique;
+    color: var(--secondery-color);
+    margin-top: -1rem;
+    margin-bottom: 10vh;
+}
+
+main i {
+    padding: 10px;
+    color: var(--secondery-color);
+    border: 3px solid var(--secondery-color);
+    border-radius: 20% 20% 50% 50%;
+}
+
+main i:hover {
+    color: var(--primary-color);
+    background-color: var(--secondery-color);
+
+
+}
+
+#about {
+    display: flex;
+    background-color: var(--primary-color);
+    padding-top: 10vh;
+    padding-bottom: 7vh;
+    width: 100%;
+}
+
+.about1 {
+    flex-grow: 1;
+    padding-left: 5vw;
+    text-align: center;
+
+}
+
+.about1 p {
+    font-weight: bold;
+    padding-top: 1vh;
+    font-size: 1.4rem;
+    text-align: center;
+    color: var(--secondery-color);
+    padding-bottom: 3vw;
+}
+
+#about h1 {
+    color: rgb(205, 85, 0);
+}
+
+.skills {
+    padding: 1vw;
+}
+
+.skillname {
+    padding-left: 2vw;
+    padding-bottom: 10px;
+    font-size: 20px;
+    color: rgb(205, 170, 85);
+}
+
+.about2 {
+    flex-grow: 1;
+}
+
+.progress-line {
+    position: relative;
+    height: 25px;
+    width: 40vw;
+    background: var(--primary-color);
+    border-radius: 10px;
+    z-index: 4;
+    transform: scaleX(0);
+    border: 2px solid var(--secondery-color);
+    animation: animate 1s cubic-bezier(1, 0, 0.5, 1) forwards;
+}
+
+@keyframes animate {
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+.progress-line span {
+    position: absolute;
+    background: var(--secondery-color);
+    height: 100%;
+    border-radius: 5px;
+    text-align: right;
+    padding-right: 5px;
+    color: var(--primary-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: animate1 1s 1s cubic-bezier(1, 0, 0.5, 1) forwards;
+}
+
+@keyframes animate1 {
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+.progress-line .html {
+    width: 85%;
+}
+
+.progress-line .html::after {
+    content: "85%";
+}
+
+.progress-line .css {
+    width: 80%;
+}
+
+.progress-line .css::after {
+    content: "80%";
+}
+
+.progress-line .javascript {
+    width: 75%;
+}
+
+.progress-line .javascript::after {
+    content: "75%";
+}
+
+.progress-line .bootstrap {
+    width: 80%;
+}
+
+.progress-line .bootstrap::after {
+    content: "80%";
+}
+
+.progress-line .react {
+    width: 75%;
+}
+
+.progress-line .react::after {
+    content: "75%";
+}
+
+@media (max-width: 1000px) {
+    #about {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .about1,
+    .about2 {
+        width: 100%;
+        padding: 0;
+    }
+
+    .about1 {
+        padding-bottom: 5vh;
+    }
+
+    .about2 {
+        padding-top: 5vh;
+        padding-left: 10vw;
+    }
+
+    .about2 h1 {
+        text-align: center;
+    }
+
+    .progress-line {
+        width: 80vw;
+    }
+}
+
+.portolink {
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: rgb(205, 170, 85);
+    font-size: 1.2em;
+    text-decoration: none;
+    padding-bottom: 5vh;
+}
+
+.portolink:hover {
+    color: var(--secondery-color);
+    text-decoration: underline;
+}
+
+#portofolio {
+    background-color: var(--primary-color);
+    padding-top: 50px;
+
+}
+
+#portofolio .mainheading {
+    text-align: center;
+    padding: 40px;
+    font-size: 3em;
+    color: rgb(205, 85, 0);
+}
+
+#portofolio button i {
+    margin-left: 5px;
+}
+
+.portofolio1 {
+    display: flex;
+    padding-bottom: 20vh;
+    justify-content: center;
+}
+
+.portofolio1 img {
+    border-radius: 50%;
+}
+
+.porto1 {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    padding-left: 15vw;
+}
+
+.porto2 {
+    flex-grow: 1;
+    text-align: left;
+    padding-top: 10vh;
+    color: rgb(204, 153, 0);
+    justify-content: space-around;
+
+}
+
+.porto2 .head1 {
+    font-weight: bold;
+    font-size: 3em;
+}
+
+.porto2 .head2 {
+    font-weight: lighter;
+}
+
+.porto2 button,
+.porto4 button {
+    border: solid rgb(184, 115, 51) 0.2rem;
+}
+
+.portofolio1 button {
+    padding: 10px;
+    border-bottom: 3px solid rgb(204, 153, 0);
+    color: var(--secondery-color);
+    background-color: var(--primary-color);
+    margin-right: 20px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.portofolio2 {
+    display: flex;
+    padding-bottom: 20vh;
+    justify-content: center;
+}
+
+.portofolio2 img {
+    border-radius: 50%;
+}
+
+.porto3 {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    padding-left: 15vw;
+}
+
+.porto4 {
+    flex-grow: 1;
+    text-align: left;
+    padding-top: 10vh;
+    color: rgb(204, 153, 0);
+    justify-content: space-around;
+
+}
+
+.porto4 .head1 {
+    font-weight: bold;
+    font-size: 3em;
+}
+
+.porto4 .head2 {
+    font-weight: lighter;
+}
+.porto2 a,.porto4 a{
+    text-decoration: none;
+    color: rgb(204, 153, 0);
+}
+.porto2 a:hover,.porto4 a:hover{
+    color: white;
+}
+
+.portofolio2 button {
+    padding: 10px;
+    border-bottom: 3px solid rgb(204, 153, 0);
+    margin-right: 20px;
+    margin-top: 20px;
+    color: var(--secondery-color);
+    background-color: var(--primary-color);
+    cursor: pointer;
+}
+
+#portofolio button:hover {
+    color: var(--primary-color);
+    background-color: rgb(204, 153, 0);
+    border-bottom: 3px solid var(--primary-color);
+}
+
+footer {
+    width: 100%;
+    background-color: var(--primary-color);
+    padding-top: 36vh;
+    padding-bottom: 36vh;
+    text-align: center;
+}
+
+footer h1 {
+    font-weight: light;
+    font-size: 5em;
+    color: rgb(184, 115, 51);
+}
+
+footer a {
+    text-decoration: none;
+    color: rgb(205, 85, 0);
+    margin: 25px;
+    padding: 5px;
+    font-size: 1.5em;
+}
+
+footer a:hover {
+    color: rgb(205, 170, 85);
+    box-shadow: 0px 10px 10px -8px rgb(205, 85, 0);
+}
+
+@media (max-width: 1000px) {
+
+    .portofolio1,
+    .portofolio2 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .porto1,
+    .porto3 {
+        padding-left: -30vw;
+    }
+
+    .porto2,
+    .porto4 {
+        text-align: center;
+    }
+
+    footer {
+        width: 100%;
+        background-color: var(--primary-color);
+        padding-top: 18vh;
+        padding-bottom: 18vh;
+        text-align: center;
+    }
+
+}
