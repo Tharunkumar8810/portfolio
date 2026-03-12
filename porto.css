@@ -1,498 +1,934 @@
-* {
-    margin: 0;
-    padding: 0;
-}
+/* ============================================
+   DESIGN SYSTEM & CSS CUSTOM PROPERTIES
+   ============================================
+   
+   CSS Custom Properties (also called CSS Variables)
+   --------------------------------------------------
+   These are declared inside :root (the <html> element) so they're
+   available EVERYWHERE in the stylesheet.
+
+   Syntax: --variable-name: value;
+   Usage:  var(--variable-name)
+
+   WHY USE THEM?
+   - Change one value here and it updates everywhere at once.
+   - Makes dark mode as simple as redefining the same variable names
+     with different values under a different selector (body.dark-mode).
+*/
 
 :root {
-    --primary-color: white;
-    --secondery-color: black;
+    /* Colors - Light Mode */
+    --bg-primary: #f8f9fc;         /* Main background */
+    --bg-secondary: #eef1f6;       /* Alternating section background */
+    --bg-card: #ffffff;            /* Card & component background */
+    --text-primary: #1a1a2e;       /* Headings & main text */
+    --text-secondary: #555580;     /* Body text, descriptions */
+    --text-muted: #8888a0;         /* Placeholders, subtle text */
+    --accent: #6c5ce7;             /* Primary accent color (buttons, links, highlights) */
+    --accent-hover: #5a4bd1;       /* Darker accent for hover states */
+    --accent-glow: rgba(108, 92, 231, 0.25); /* Glow effect around buttons/cards */
+    --border: rgba(0, 0, 0, 0.08); /* Subtle borders */
+    --glass-bg: rgba(255, 255, 255, 0.7);    /* Glassmorphism: semi-transparent bg */
+    --glass-border: rgba(255, 255, 255, 0.5); /* Glassmorphism: border */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);   /* Small shadow */
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);   /* Medium shadow */
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);  /* Large shadow */
+    --tag-bg: #ede8ff;             /* Skill tag background */
+    --tag-text: #6c5ce7;           /* Skill tag text color */
+    --gradient1: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
 }
 
-.dark-mode {
-    --primary-color: black;
-    --secondery-color: white;
+/*
+   DARK MODE
+   ---------
+   When body has class "dark-mode", all the same variable names
+   get overridden with dark-friendly values. Every element using
+   var(--bg-primary) etc. automatically updates. No extra CSS needed!
+*/
+body.dark-mode {
+    --bg-primary: #0f0f1a;
+    --bg-secondary: #161625;
+    --bg-card: #1c1c30;
+    --text-primary: #e8e8f0;
+    --text-secondary: #a0a0c0;
+    --text-muted: #6868a0;
+    --accent: #a29bfe;
+    --accent-hover: #b8b2ff;
+    --accent-glow: rgba(162, 155, 254, 0.3);
+    --border: rgba(255, 255, 255, 0.06);
+    --glass-bg: rgba(20, 20, 40, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+    --tag-bg: rgba(162, 155, 254, 0.15);
+    --tag-text: #a29bfe;
+    --gradient1: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
 }
 
-nav {
-    width: 100%;
-    height: 10vh;
-    position: sticky;
-    left: 0;
-    top: 0;
-    font-family: cursive;
-    font-weight: bolder;
-    background-color: var(--primary-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px outset var(--secondery-color);
-    z-index: 5;
+/* ============================================
+   RESET & BASE STYLES
+   ============================================
+   
+   box-sizing: border-box → Makes width/height INCLUDE padding and border.
+   Without it, a 200px wide box with 20px padding would actually be 240px wide.
+   With border-box, it stays 200px and the padding is inside.
+*/
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-#links a.nav-link {
-    color: var(--secondery-color);
+html {
+    /* scroll-behavior: smooth → When clicking anchor links (#about, #skills),
+       the page GLIDES smoothly instead of jumping instantly. */
+    scroll-behavior: smooth;
+    
+    /* scroll-padding-top → Offsets the scroll destination so content
+       doesn't hide behind the fixed navbar (70px tall + 10px buffer). */
+    scroll-padding-top: 80px;
 }
 
-@media(max-width:992px) {
-    #links a.nav-link {
-        color: rgb(205, 85, 0);
-    }
-
-    #name {
-        color: var(--secondery-color);
-    }
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.7;
+    /* transition → Smoothly animates the color change when toggling dark mode
+       instead of instantly flipping. "0.4s ease" = 0.4 seconds with easing. */
+    transition: background-color 0.4s ease, color 0.4s ease;
+    overflow-x: hidden; /* Prevents horizontal scrollbar */
 }
 
-@media(min-width:993px) {
-    #name{
-        color: rgb(205, 85, 0);
-    }
-}
-
-#name {
-    flex-grow: 1;
-    padding-left: 5vw;
-    font-size: 20px;
-}
-
-.offcanvas {
-    flex-grow: 2;
-    justify-content: space-around;
-    font-size: 1.2rem;
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-}
-
-nav ul li {
-    flex-grow: 1;
-}
-
-.nav-item {
+a {
     text-decoration: none;
-    color: var(--secondery-color);
+    color: inherit; /* inherit = same color as parent element */
+    transition: color 0.3s ease;
 }
 
-.nav-item:hover {
-    color: rgb(205, 85, 0);
+ul { list-style: none; }
+
+/* ============================================
+   NAVBAR CUSTOM STYLES
+   ============================================
+   Bootstrap handles the navbar STRUCTURE (layout, toggler, offcanvas).
+   We add our own VISUAL styles (colors, glassmorphism, fonts) on top.
+*/
+
+/* Override Bootstrap's default navbar background */
+#navbar.navbar {
+    background: var(--glass-bg) !important;
+    /* 
+       backdrop-filter: blur(20px) → GLASSMORPHISM EFFECT!
+       It blurs whatever is BEHIND the element, making it look like frosted glass.
+       -webkit-backdrop-filter is needed for Safari support.
+    */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0.5rem 1.5rem;
+    transition: all 0.4s ease;
 }
 
-#color-mode {
-    color: rgb(205, 85, 0);
-    cursor: pointer;
-    padding-right: 1rem;
+#navbar.scrolled {
+    box-shadow: var(--shadow-sm);
 }
 
-/* Adjusted navbar-toggler to preserve Bootstrap's icon */
-.navbar-toggler {
-    background-color: transparent;
-    /* Example: Make background transparent */
-    border: 3px solid black;
-    /* Remove border if undesired */
+/* Logo styling */
+.nav-logo {
+    font-family: 'Fira Code', monospace !important;
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    color: var(--accent) !important;
+    letter-spacing: -0.5px;
 }
 
-/* Optional: Customize the toggler icon color if needed */
-.navbar-toggler-icon {
-    filter: invert(50%);
-    /* Example filter to adjust icon color */
-}
-
-.k {
-    color: rgb(255, 223, 0);
-}
-
-.navbar-toggler {
-    color: rgb(205, 85, 0);
-    background-color: rgb(205, 85, 0);
-}
-
-main {
-    width: 100%;
-    height: 50vh;
-    text-align: center;
-    padding-top: 40vh;
-    padding-bottom: 50vh;
-    background-color: var(--primary-color);
-}
-
-main .head1 {
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 60px;
-    color: rgb(205, 85, 0);
-    font-style: oblique;
-}
-
-main .hi {
-    color: var(--secondery-color);
-}
-
-main .head2 {
-    margin-left: 25vw;
-    font-weight: lighter;
-    font-style: oblique;
-    color: var(--secondery-color);
-    margin-top: -1rem;
-    margin-bottom: 10vh;
-}
-
-main i {
-    padding: 10px;
-    color: var(--secondery-color);
-    border: 3px solid var(--secondery-color);
-    border-radius: 20% 20% 50% 50%;
-}
-
-main i:hover {
-    color: var(--primary-color);
-    background-color: var(--secondery-color);
-
-
-}
-
-#about {
-    display: flex;
-    background-color: var(--primary-color);
-    padding-top: 10vh;
-    padding-bottom: 7vh;
-    width: 100%;
-}
-
-.about1 {
-    flex-grow: 1;
-    padding-left: 5vw;
-    text-align: center;
-
-}
-
-.about1 p {
-    font-weight: bold;
-    padding-top: 1vh;
-    font-size: 1.4rem;
-    text-align: center;
-    color: var(--secondery-color);
-    padding-bottom: 3vw;
-}
-
-#about h1 {
-    color: rgb(205, 85, 0);
-}
-
-.skills {
-    padding: 1vw;
-}
-
-.skillname {
-    padding-left: 2vw;
-    padding-bottom: 10px;
-    font-size: 20px;
-    color: rgb(205, 170, 85);
-}
-
-.about2 {
-    flex-grow: 1;
-}
-
-.progress-line {
+/* Override Bootstrap's default link colors */
+#navbar .nav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary) !important;
     position: relative;
-    height: 25px;
-    width: 40vw;
-    background: var(--primary-color);
-    border-radius: 10px;
-    z-index: 4;
-    transform: scaleX(0);
-    border: 2px solid var(--secondery-color);
-    animation: animate 1s cubic-bezier(1, 0, 0.5, 1) forwards;
+    padding: 0.5rem 0.75rem !important;
+    transition: color 0.3s ease;
 }
 
-@keyframes animate {
-    100% {
-        transform: scaleX(1);
-    }
-}
-
-.progress-line span {
+/* 
+   ::after PSEUDO-ELEMENT
+   ----------------------
+   Every element can have a ::before and ::after "ghost child."
+   Here we use ::after to create the animated underline effect:
+   - Start at width: 0 (invisible)
+   - On hover, grow to width: 100%
+*/
+#navbar .nav-link::after {
+    content: '';
     position: absolute;
-    background: var(--secondery-color);
-    height: 100%;
-    border-radius: 5px;
-    text-align: right;
-    padding-right: 5px;
-    color: var(--primary-color);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+#navbar .nav-link:hover,
+#navbar .nav-link.active {
+    color: var(--accent) !important;
+}
+
+#navbar .nav-link:hover::after,
+#navbar .nav-link.active::after {
+    width: 70%;
+}
+
+/* Nav action buttons */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: 1rem;
+}
+
+.btn-resume {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border: 1.5px solid var(--accent);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-resume:hover {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.theme-toggle {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-glow);
+}
+
+/* Override Bootstrap's default toggler to match our theme */
+.navbar-toggler {
+    border: 1.5px solid var(--border) !important;
+    padding: 0.3rem 0.5rem !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 3px var(--accent-glow) !important;
+}
+
+/* Fix toggler icon color for light/dark modes */
+.navbar-toggler-icon {
+    /* 
+       filter: invert() → Flips the color of an image/icon.
+       In dark mode, the default dark lines become invisible, so we
+       brighten them. In light mode we dim them slightly.
+    */
+    filter: brightness(0.6);
+}
+
+body.dark-mode .navbar-toggler-icon {
+    filter: invert(0.8);
+}
+
+/* Style the offcanvas panel to match our theme */
+.offcanvas {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+.offcanvas-header .btn-close {
+    filter: brightness(0.5);
+}
+
+body.dark-mode .offcanvas-header .btn-close {
+    filter: invert(1);
+}
+
+.offcanvas-title {
+    color: var(--accent) !important;
+    font-family: 'Fira Code', monospace;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================
+   
+   Flexbox centering trick:
+   display: flex + align-items: center + justify-content: center
+   → Centers content both vertically AND horizontally.
+   
+   min-height: 100vh → At least the full viewport height.
+   "vh" = viewport height units. 100vh = 100% of screen height.
+*/
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 2rem 80px;
+    position: relative;
+    background: var(--bg-primary);
+}
+
+/* 
+   Radial gradient glow behind the hero text.
+   position: absolute + z-index: 0 places it BEHIND the text.
+   pointer-events: none → Clicks pass through it (it's decorative only).
+*/
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1; /* z-index: 1 → Sits ABOVE the ::before glow (z-index: 0) */
+}
+
+.hero-greeting {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* 
+   clamp(min, preferred, max) → RESPONSIVE font size!
+   - Never smaller than 2.8rem
+   - Scales with viewport width (7vw)
+   - Never larger than 5rem
+   This is MUCH better than media queries for font sizes.
+*/
+.hero-name {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    /* 
+       Gradient text trick:
+       1. Apply a gradient as background
+       2. Clip the background to the text shape
+       3. Make the text itself transparent
+       → The gradient shows THROUGH the text letters!
+    */
+    background: var(--gradient1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-title {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-bottom: 1.2rem;
+}
+
+.hero-subtitle {
+    max-width: 550px;
+    margin: 0 auto 2rem;
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap; /* flex-wrap: wrap → Items wrap to next line if they can't fit */
+}
+
+.hero-social {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+}
+
+.hero-social a {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+}
+
+.hero-social a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    /* translateY(-3px) → Moves the element UP by 3px on hover (lift effect) */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+/* Scroll indicator — bouncing chevron */
+.hero-scroll {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hero-scroll a span {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-right: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(45deg);
+    /* 
+       animation shorthand:
+       name | duration | timing | iteration-count
+       scrollBounce = the animation name (defined in @keyframes below)
+       2s = runs for 2 seconds
+       infinite = repeats forever
+    */
+    animation: scrollBounce 2s infinite;
+}
+
+/* 
+   @keyframes → Defines the animation steps.
+   0% = start, 50% = middle, 100% = end.
+   The browser smoothly interpolates between these states.
+*/
+@keyframes scrollBounce {
+    0%   { opacity: 0; transform: rotate(45deg) translate(-8px, -8px); }
+    50%  { opacity: 1; }
+    100% { opacity: 0; transform: rotate(45deg) translate(8px, 8px); }
+}
+
+/* ============================================
+   BUTTONS (Custom — not Bootstrap's .btn styles)
+   ============================================ */
+.btn.btn-primary-custom,
+.btn.btn-outline-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.8rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary-custom {
+    background: var(--accent) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 15px var(--accent-glow);
+}
+
+.btn-primary-custom:hover {
+    background: var(--accent-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--accent-glow);
+    color: #fff !important;
+}
+
+.btn-outline-custom {
+    background: transparent !important;
+    color: var(--accent) !important;
+    border: 1.5px solid var(--accent) !important;
+}
+
+.btn-outline-custom:hover {
+    background: var(--accent) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--accent-glow);
+}
+
+/* ============================================
+   SECTIONS (shared styles for all content sections)
+   ============================================ */
+.section {
+    padding: 100px 2rem;
+    background: var(--bg-primary);
+}
+
+.section-alt {
+    background: var(--bg-secondary);
+}
+
+.section-container {
+    max-width: 1100px;
+    margin: 0 auto; /* Centers the container horizontally */
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    color: var(--text-primary);
+}
+
+/* Decorative accent line under section titles */
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 2px;
+    margin: 0.7rem auto 0;
+}
+
+/* ============================================
+   ABOUT SECTION
+   ============================================ */
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-text p {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.2rem;
+    line-height: 1.85;
+}
+
+.about-text strong {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* 
+   CSS Grid Layout
+   ---------------
+   grid-template-columns: repeat(2, 1fr) → Creates 2 equal columns.
+   "1fr" = 1 fraction of available space. Two "1fr"s = 50% each.
+   "gap" = space between grid items (like margin but only between items, not edges).
+*/
+.about-highlights {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.2rem;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.highlight-item:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px var(--accent-glow);
+    transform: translateY(-2px);
+}
+
+.highlight-item i {
+    font-size: 1.3rem;
+    color: var(--accent);
+    flex-shrink: 0; /* Prevents the icon from shrinking if text is long */
+}
+
+.highlight-item span {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+/* ============================================
+   SKILLS SECTION
+   ============================================ */
+
+/* 
+   auto-fit + minmax() → RESPONSIVE GRID without media queries!
+   - Creates as many columns as will fit
+   - Each column is at least 280px wide
+   - If there's extra space, columns stretch to fill it (1fr)
+   - If screen is too narrow for 2 columns, it becomes 1 column automatically!
+*/
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.skill-category {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.skill-category:hover {
+    border-color: var(--accent);
+    box-shadow: 0 8px 30px var(--accent-glow);
+    transform: translateY(-4px);
+}
+
+.skill-category h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill-tag {
+    padding: 0.35rem 0.85rem;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.skill-tag:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   PROJECTS SECTION
+   ============================================ */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 
+   The gradient line at the top of each card.
+   transform: scaleX(0) → Starts invisible (0 width).
+   On hover, scaleX(1) → Expands to full width with a smooth animation.
+   "transform-origin" is not needed here because scaleX defaults to center.
+*/
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient1);
     transform: scaleX(0);
-    transform-origin: left;
-    animation: animate1 1s 1s cubic-bezier(1, 0, 0.5, 1) forwards;
+    transition: transform 0.4s ease;
 }
 
-@keyframes animate1 {
-    100% {
-        transform: scaleX(1);
-    }
+.project-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 12px 40px var(--accent-glow);
+    transform: translateY(-6px);
 }
 
-.progress-line .html {
-    width: 85%;
+.project-card:hover::before {
+    transform: scaleX(1);
 }
 
-.progress-line .html::after {
-    content: "85%";
-}
-
-.progress-line .css {
-    width: 80%;
-}
-
-.progress-line .css::after {
-    content: "80%";
-}
-
-.progress-line .javascript {
-    width: 75%;
-}
-
-.progress-line .javascript::after {
-    content: "75%";
-}
-
-.progress-line .bootstrap {
-    width: 80%;
-}
-
-.progress-line .bootstrap::after {
-    content: "80%";
-}
-
-.progress-line .react {
-    width: 75%;
-}
-
-.progress-line .react::after {
-    content: "75%";
-}
-
-@media (max-width: 1000px) {
-    #about {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .about1,
-    .about2 {
-        width: 100%;
-        padding: 0;
-    }
-
-    .about1 {
-        padding-bottom: 5vh;
-    }
-
-    .about2 {
-        padding-top: 5vh;
-        padding-left: 10vw;
-    }
-
-    .about2 h1 {
-        text-align: center;
-    }
-
-    .progress-line {
-        width: 80vw;
-    }
-}
-
-.portolink {
-    text-align: center;
-    font-weight: bold;
-    width: 100%;
-    background-color: var(--primary-color);
-    color: rgb(205, 170, 85);
-    font-size: 1.2em;
-    text-decoration: none;
-    padding-bottom: 5vh;
-}
-
-.portolink:hover {
-    color: var(--secondery-color);
-    text-decoration: underline;
-}
-
-#portofolio {
-    background-color: var(--primary-color);
-    padding-top: 50px;
-
-}
-
-#portofolio .mainheading {
-    text-align: center;
-    padding: 40px;
-    font-size: 3em;
-    color: rgb(205, 85, 0);
-}
-
-#portofolio button i {
-    margin-left: 5px;
-}
-
-.portofolio1 {
+.project-card-header {
     display: flex;
-    padding-bottom: 20vh;
-    justify-content: center;
-}
-
-.portofolio1 img {
-    border-radius: 50%;
-}
-
-.porto1 {
-    flex-grow: 1;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    padding-left: 15vw;
+    margin-bottom: 1.2rem;
 }
 
-.porto2 {
-    flex-grow: 1;
-    text-align: left;
-    padding-top: 10vh;
-    color: rgb(204, 153, 0);
-    justify-content: space-around;
-
+.project-icon {
+    font-size: 1.6rem;
+    color: var(--accent);
 }
 
-.porto2 .head1 {
-    font-weight: bold;
-    font-size: 3em;
-}
-
-.porto2 .head2 {
-    font-weight: lighter;
-}
-
-.porto2 button,
-.porto4 button {
-    border: solid rgb(184, 115, 51) 0.2rem;
-}
-
-.portofolio1 button {
-    padding: 10px;
-    border-bottom: 3px solid rgb(204, 153, 0);
-    color: var(--secondery-color);
-    background-color: var(--primary-color);
-    margin-right: 20px;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-.portofolio2 {
+.project-links {
     display: flex;
-    padding-bottom: 20vh;
-    justify-content: center;
+    gap: 0.8rem;
 }
 
-.portofolio2 img {
-    border-radius: 50%;
+.project-links a {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
 }
 
-.porto3 {
+.project-links a:hover {
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.project-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    color: var(--text-primary);
+}
+
+.project-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    /* flex-grow: 1 → Pushes the tools section to the bottom of the card,
+       even if different cards have different description lengths. */
     flex-grow: 1;
-    justify-content: center;
+}
+
+.project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: auto;
+}
+
+.project-tools span {
+    padding: 0.2rem 0.65rem;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: 'Fira Code', monospace;
+    font-weight: 500;
+}
+
+/* ============================================
+   CONTACT SECTION (No Form — Just Cards)
+   ============================================ */
+.contact-intro {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: -1rem auto 2.5rem;
+}
+
+.contact-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.contact-card {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    padding-left: 15vw;
-}
-
-.porto4 {
-    flex-grow: 1;
-    text-align: left;
-    padding-top: 10vh;
-    color: rgb(204, 153, 0);
-    justify-content: space-around;
-
-}
-
-.porto4 .head1 {
-    font-weight: bold;
-    font-size: 3em;
-}
-
-.porto4 .head2 {
-    font-weight: lighter;
-}
-.porto2 a,.porto4 a{
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: all 0.3s ease;
     text-decoration: none;
-    color: rgb(204, 153, 0);
-}
-.porto2 a:hover,.porto4 a:hover{
-    color: white;
+    color: inherit;
 }
 
-.portofolio2 button {
-    padding: 10px;
-    border-bottom: 3px solid rgb(204, 153, 0);
-    margin-right: 20px;
-    margin-top: 20px;
-    color: var(--secondery-color);
-    background-color: var(--primary-color);
-    cursor: pointer;
+.contact-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px var(--accent-glow);
+    color: inherit;
 }
 
-#portofolio button:hover {
-    color: var(--primary-color);
-    background-color: rgb(204, 153, 0);
-    border-bottom: 3px solid var(--primary-color);
+.contact-card i {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
 }
 
+.contact-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+}
+
+.contact-card p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin: 0;
+    word-break: break-word;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
 footer {
-    width: 100%;
-    background-color: var(--primary-color);
-    padding-top: 36vh;
-    padding-bottom: 36vh;
+    padding: 2rem;
     text-align: center;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
 }
 
-footer h1 {
-    font-weight: light;
-    font-size: 5em;
-    color: rgb(184, 115, 51);
+footer p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
 }
 
-footer a {
-    text-decoration: none;
-    color: rgb(205, 85, 0);
-    margin: 25px;
-    padding: 5px;
-    font-size: 1.5em;
+footer strong {
+    color: var(--accent);
 }
 
-footer a:hover {
-    color: rgb(205, 170, 85);
-    box-shadow: 0px 10px 10px -8px rgb(205, 85, 0);
+.footer-copy {
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
 }
 
-@media (max-width: 1000px) {
+/* ============================================
+   SCROLL REVEAL ANIMATION
+   ============================================
+   
+   Elements with class "reveal" start invisible and shifted down.
+   When JavaScript detects them entering the viewport (via 
+   IntersectionObserver), it adds class "active" → they fade in
+   and slide up smoothly.
+*/
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
 
-    .portofolio1,
-    .portofolio2 {
-        flex-direction: column;
-        align-items: center;
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN — MEDIA QUERIES
+   ============================================
+   
+   @media (max-width: XXXpx) → "If the screen is NARROWER than XXXpx,
+   apply these styles." This is called "desktop-first" responsive design
+   (start with desktop styles, then override for smaller screens).
+   
+   Common breakpoints:
+   768px → tablets and smaller
+   480px → mobile phones
+   360px → very small phones
+*/
+
+@media (max-width: 992px) {
+    /* Below Bootstrap's "lg" breakpoint — navbar collapses here */
+    .nav-actions {
+        margin-left: auto;
+        margin-right: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero { padding: 100px 1.5rem 60px; }
+
+    .hero-name { font-size: 2.5rem; }
+
+    .hero-subtitle { font-size: 0.9rem; }
+
+    .about-highlights {
+        grid-template-columns: 1fr; /* Stack to single column */
     }
 
-    .porto1,
-    .porto3 {
-        padding-left: -30vw;
+    .section { padding: 70px 1.5rem; }
+    
+    .contact-cards {
+        grid-template-columns: 1fr;
     }
+}
 
-    .porto2,
-    .porto4 {
-        text-align: center;
+@media (max-width: 480px) {
+    .hero { padding: 90px 1rem 50px; }
+    .hero-name { font-size: 2rem; }
+    .hero-title { font-size: 1rem; }
+    .section { padding: 50px 1rem; }
+    .section-title { font-size: 1.7rem; margin-bottom: 2rem; }
+
+    .hero-cta { flex-direction: column; align-items: center; }
+
+    .btn-resume {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.75rem;
     }
+    
+    .project-card { padding: 1.3rem; }
+    .skill-category { padding: 1.2rem; }
+}
 
-    footer {
-        width: 100%;
-        background-color: var(--primary-color);
-        padding-top: 18vh;
-        padding-bottom: 18vh;
-        text-align: center;
-    }
-
+@media (max-width: 360px) {
+    .hero-name { font-size: 1.7rem; }
+    .hero-greeting { font-size: 0.9rem; }
+    .nav-logo { font-size: 1.1rem !important; }
 }
