@@ -18,23 +18,40 @@
 
 :root {
     /* Colors - Light Mode */
-    --bg-primary: #f8f9fc;         /* Main background */
-    --bg-secondary: #eef1f6;       /* Alternating section background */
-    --bg-card: #ffffff;            /* Card & component background */
-    --text-primary: #1a1a2e;       /* Headings & main text */
-    --text-secondary: #555580;     /* Body text, descriptions */
-    --text-muted: #8888a0;         /* Placeholders, subtle text */
-    --accent: #6c5ce7;             /* Primary accent color (buttons, links, highlights) */
-    --accent-hover: #5a4bd1;       /* Darker accent for hover states */
-    --accent-glow: rgba(108, 92, 231, 0.25); /* Glow effect around buttons/cards */
-    --border: rgba(0, 0, 0, 0.08); /* Subtle borders */
-    --glass-bg: rgba(255, 255, 255, 0.7);    /* Glassmorphism: semi-transparent bg */
-    --glass-border: rgba(255, 255, 255, 0.5); /* Glassmorphism: border */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);   /* Small shadow */
-    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);   /* Medium shadow */
-    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);  /* Large shadow */
-    --tag-bg: #ede8ff;             /* Skill tag background */
-    --tag-text: #6c5ce7;           /* Skill tag text color */
+    --bg-primary: #f8f9fc;
+    /* Main background */
+    --bg-secondary: #eef1f6;
+    /* Alternating section background */
+    --bg-card: #ffffff;
+    /* Card & component background */
+    --text-primary: #1a1a2e;
+    /* Headings & main text */
+    --text-secondary: #555580;
+    /* Body text, descriptions */
+    --text-muted: #8888a0;
+    /* Placeholders, subtle text */
+    --accent: #6c5ce7;
+    /* Primary accent color (buttons, links, highlights) */
+    --accent-hover: #5a4bd1;
+    /* Darker accent for hover states */
+    --accent-glow: rgba(108, 92, 231, 0.25);
+    /* Glow effect around buttons/cards */
+    --border: rgba(0, 0, 0, 0.08);
+    /* Subtle borders */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    /* Glassmorphism: semi-transparent bg */
+    --glass-border: rgba(255, 255, 255, 0.5);
+    /* Glassmorphism: border */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    /* Small shadow */
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
+    /* Medium shadow */
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.12);
+    /* Large shadow */
+    --tag-bg: #ede8ff;
+    /* Skill tag background */
+    --tag-text: #6c5ce7;
+    /* Skill tag text color */
     --gradient1: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
 }
 
@@ -86,7 +103,7 @@ html {
     /* scroll-behavior: smooth → When clicking anchor links (#about, #skills),
        the page GLIDES smoothly instead of jumping instantly. */
     scroll-behavior: smooth;
-    
+
     /* scroll-padding-top → Offsets the scroll destination so content
        doesn't hide behind the fixed navbar (70px tall + 10px buffer). */
     scroll-padding-top: 80px;
@@ -100,16 +117,20 @@ body {
     /* transition → Smoothly animates the color change when toggling dark mode
        instead of instantly flipping. "0.4s ease" = 0.4 seconds with easing. */
     transition: background-color 0.4s ease, color 0.4s ease;
-    overflow-x: hidden; /* Prevents horizontal scrollbar */
+    overflow-x: hidden;
+    /* Prevents horizontal scrollbar */
 }
 
 a {
     text-decoration: none;
-    color: inherit; /* inherit = same color as parent element */
+    color: inherit;
+    /* inherit = same color as parent element */
     transition: color 0.3s ease;
 }
 
-ul { list-style: none; }
+ul {
+    list-style: none;
+}
 
 /* ============================================
    NAVBAR CUSTOM STYLES
@@ -120,17 +141,23 @@ ul { list-style: none; }
 
 /* Override Bootstrap's default navbar background */
 #navbar.navbar {
-    background: var(--glass-bg) !important;
-    /* 
-       backdrop-filter: blur(20px) → GLASSMORPHISM EFFECT!
-       It blurs whatever is BEHIND the element, making it look like frosted glass.
-       -webkit-backdrop-filter is needed for Safari support.
-    */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: transparent !important;
     border-bottom: 1px solid var(--glass-border);
     padding: 0.5rem 1.5rem;
     transition: all 0.4s ease;
+}
+
+#navbar.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: -1;
 }
 
 #navbar.scrolled {
@@ -264,6 +291,30 @@ body.dark-mode .navbar-toggler-icon {
 .offcanvas {
     background-color: var(--bg-primary) !important;
     color: var(--text-primary) !important;
+    z-index: 1080 !important;
+    width: 75% !important;
+    max-width: 300px;
+}
+
+/* Make nav links clearly visible inside the offcanvas on mobile */
+.offcanvas .navbar-nav {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem;
+    padding: 1rem 0;
+}
+
+.offcanvas .nav-link {
+    font-size: 1.1rem !important;
+    padding: 0.6rem 1rem !important;
+    color: var(--text-primary) !important;
+    width: 100%;
+    display: block !important;
+}
+
+.offcanvas .nav-link:hover,
+.offcanvas .nav-link.active {
+    color: var(--accent) !important;
 }
 
 .offcanvas-header .btn-close {
@@ -323,7 +374,8 @@ body.dark-mode .offcanvas-header .btn-close {
 
 .hero-content {
     position: relative;
-    z-index: 1; /* z-index: 1 → Sits ABOVE the ::before glow (z-index: 0) */
+    z-index: 1;
+    /* z-index: 1 → Sits ABOVE the ::before glow (z-index: 0) */
 }
 
 .hero-greeting {
@@ -380,7 +432,8 @@ body.dark-mode .offcanvas-header .btn-close {
     gap: 1rem;
     justify-content: center;
     margin-bottom: 2.5rem;
-    flex-wrap: wrap; /* flex-wrap: wrap → Items wrap to next line if they can't fit */
+    flex-wrap: wrap;
+    /* flex-wrap: wrap → Items wrap to next line if they can't fit */
 }
 
 .hero-social {
@@ -441,9 +494,19 @@ body.dark-mode .offcanvas-header .btn-close {
    The browser smoothly interpolates between these states.
 */
 @keyframes scrollBounce {
-    0%   { opacity: 0; transform: rotate(45deg) translate(-8px, -8px); }
-    50%  { opacity: 1; }
-    100% { opacity: 0; transform: rotate(45deg) translate(8px, 8px); }
+    0% {
+        opacity: 0;
+        transform: rotate(45deg) translate(-8px, -8px);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: rotate(45deg) translate(8px, 8px);
+    }
 }
 
 /* ============================================
@@ -504,7 +567,8 @@ body.dark-mode .offcanvas-header .btn-close {
 
 .section-container {
     max-width: 1100px;
-    margin: 0 auto; /* Centers the container horizontally */
+    margin: 0 auto;
+    /* Centers the container horizontally */
 }
 
 .section-title {
@@ -581,7 +645,8 @@ body.dark-mode .offcanvas-header .btn-close {
 .highlight-item i {
     font-size: 1.3rem;
     color: var(--accent);
-    flex-shrink: 0; /* Prevents the icon from shrinking if text is long */
+    flex-shrink: 0;
+    /* Prevents the icon from shrinking if text is long */
 }
 
 .highlight-item span {
@@ -885,50 +950,107 @@ footer strong {
 
 @media (max-width: 992px) {
     /* Below Bootstrap's "lg" breakpoint — navbar collapses here */
+
+    /* Hide logo on mobile so only hamburger (left) + actions (right) remain */
+    .nav-logo {
+        display: none !important;
+    }
+
+    /* Push resume + dark mode toggle to the far right */
     .nav-actions {
         margin-left: auto;
-        margin-right: 0.5rem;
+        margin-right: 0;
+    }
+
+    /* Ensure navbar doesn't overflow the screen */
+    #navbar.navbar {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .nav-container {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 }
 
 @media (max-width: 768px) {
-    .hero { padding: 100px 1.5rem 60px; }
-
-    .hero-name { font-size: 2.5rem; }
-
-    .hero-subtitle { font-size: 0.9rem; }
-
-    .about-highlights {
-        grid-template-columns: 1fr; /* Stack to single column */
+    .hero {
+        padding: 100px 1.5rem 60px;
     }
 
-    .section { padding: 70px 1.5rem; }
-    
+    .hero-name {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .about-highlights {
+        grid-template-columns: 1fr;
+        /* Stack to single column */
+    }
+
+    .section {
+        padding: 70px 1.5rem;
+    }
+
     .contact-cards {
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 480px) {
-    .hero { padding: 90px 1rem 50px; }
-    .hero-name { font-size: 2rem; }
-    .hero-title { font-size: 1rem; }
-    .section { padding: 50px 1rem; }
-    .section-title { font-size: 1.7rem; margin-bottom: 2rem; }
+    .hero {
+        padding: 90px 1rem 50px;
+    }
 
-    .hero-cta { flex-direction: column; align-items: center; }
+    .hero-name {
+        font-size: 2rem;
+    }
+
+    .hero-title {
+        font-size: 1rem;
+    }
+
+    .section {
+        padding: 50px 1rem;
+    }
+
+    .section-title {
+        font-size: 1.7rem;
+        margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        align-items: center;
+    }
 
     .btn-resume {
         padding: 0.4rem 0.7rem;
         font-size: 0.75rem;
     }
-    
-    .project-card { padding: 1.3rem; }
-    .skill-category { padding: 1.2rem; }
+
+    .project-card {
+        padding: 1.3rem;
+    }
+
+    .skill-category {
+        padding: 1.2rem;
+    }
 }
 
 @media (max-width: 360px) {
-    .hero-name { font-size: 1.7rem; }
-    .hero-greeting { font-size: 0.9rem; }
-    .nav-logo { font-size: 1.1rem !important; }
+    .hero-name {
+        font-size: 1.7rem;
+    }
+
+    .hero-greeting {
+        font-size: 0.9rem;
+    }
+
+    .nav-logo {
+        font-size: 1.1rem !important;
+    }
 }
