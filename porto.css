@@ -99,6 +99,12 @@ body.dark-mode {
     box-sizing: border-box;
 }
 
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 html {
     /* scroll-behavior: smooth → When clicking anchor links (#about, #skills),
        the page GLIDES smoothly instead of jumping instantly. */
@@ -145,6 +151,18 @@ ul {
     border-bottom: 1px solid var(--glass-border);
     padding: 0.5rem 1.5rem;
     transition: all 0.4s ease;
+    width: 100%;
+    max-width: 100vw;
+}
+
+/* Container inside navbar — proper flex alignment */
+.nav-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 #navbar.navbar::before {
@@ -296,25 +314,36 @@ body.dark-mode .navbar-toggler-icon {
     max-width: 300px;
 }
 
-/* Make nav links clearly visible inside the offcanvas on mobile */
-.offcanvas .navbar-nav {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 0.5rem;
-    padding: 1rem 0;
+/* On desktop (>=992px) the offcanvas renders inline — ensure it behaves like a regular flex child */
+@media (min-width: 992px) {
+    .offcanvas {
+        flex-grow: 1;
+        width: auto !important;
+        max-width: none;
+    }
 }
 
-.offcanvas .nav-link {
-    font-size: 1.1rem !important;
-    padding: 0.6rem 1rem !important;
-    color: var(--text-primary) !important;
-    width: 100%;
-    display: block !important;
-}
+/* Make nav links clearly visible inside the offcanvas on mobile ONLY */
+@media (max-width: 991.98px) {
+    .offcanvas .navbar-nav {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem;
+        padding: 1rem 0;
+    }
 
-.offcanvas .nav-link:hover,
-.offcanvas .nav-link.active {
-    color: var(--accent) !important;
+    .offcanvas .nav-link {
+        font-size: 1.1rem !important;
+        padding: 0.6rem 1rem !important;
+        color: var(--text-primary) !important;
+        width: 100%;
+        display: block !important;
+    }
+
+    .offcanvas .nav-link:hover,
+    .offcanvas .nav-link.active {
+        color: var(--accent) !important;
+    }
 }
 
 .offcanvas-header .btn-close {
@@ -948,7 +977,7 @@ footer strong {
    360px → very small phones
 */
 
-@media (max-width: 992px) {
+@media (max-width: 991.98px) {
     /* Below Bootstrap's "lg" breakpoint — navbar collapses here */
 
     /* Hide logo on mobile so only hamburger (left) + actions (right) remain */
@@ -965,11 +994,14 @@ footer strong {
     /* Ensure navbar doesn't overflow the screen */
     #navbar.navbar {
         padding: 0.5rem 0.75rem;
+        max-width: 100vw;
     }
 
     .nav-container {
         padding-left: 0 !important;
         padding-right: 0 !important;
+        max-width: 100%;
+        overflow: hidden;
     }
 }
 
